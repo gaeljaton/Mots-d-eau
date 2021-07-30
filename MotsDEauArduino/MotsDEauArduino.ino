@@ -1,4 +1,3 @@
-//#include <avr/pgmspace.h>
 #include <Debouncer.h>;
 Debouncer bouncer10(10, 50);//50 ms
 Debouncer bouncer11(11, 50);
@@ -38,16 +37,7 @@ void setup() {
 
   Serial.println(phrase);
 }
-//void printframe() {
-//  for (byte a = 0; a < 8; a++) {
-//    digitalWrite(a + 2, bitRead (data[frameChar], a) );
-//    if(bitRead (data[frameChar], 7-a))Serial.print("88");
-//    else Serial.print("  ");
-//  }
-//Serial.println("");
-//  frameChar++;
-//  if (frameChar >= (sizeof(data) - 1)) frameChar = 0;
-//}
+
 void bip() {
   for (byte a = 0; a <= phraseNow % 4; a++) {
     if (phraseNow >= 12)tone(18, 3200);
@@ -110,10 +100,6 @@ void printframe() {
     if (pixCol == 0) flag0 = 1;
     frameChar++;
     if (frameChar >= 8) {
-//      if (!digitalRead(17)) {
-//        bipEnd();
-//        bipEnd();
-//      }
       frameChar = 0;
       flag0 = 0;
       stepChar++;
@@ -121,6 +107,9 @@ void printframe() {
   }
   if (!phrase[stepChar]) {
     if (!digitalRead(17)) {
+        for (byte i = 0; i < 8; i++) {
+      digitalWrite(i + 2, 0);
+    }
       bip();
       delay(500);
       bip();
@@ -170,5 +159,4 @@ void loop() {
     flagRead = 0;
     bipBeginLoop();
   }
-
 }
